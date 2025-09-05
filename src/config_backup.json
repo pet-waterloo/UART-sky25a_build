@@ -66,11 +66,11 @@
   "//": "Clock",
   "RUN_CTS": 1,
 
-  "//": "Don't use power rings or TopMetal layers, limit to met4 to avoid Metal5 error",
+  "//": "Don't use power rings or TopMetal layers, limit to met3 to avoid Metal5 error",
   "FP_PDN_MULTILAYER": 0,
-  "RT_MAX_LAYER": "met4",
+  "RT_MAX_LAYER": "met3",
   "RT_MIN_LAYER": "met1",
-  "GRT_MAX_LAYER": "met4",
+  "GRT_MAX_LAYER": "met3",
 
   "//": "MAGIC_DEF_LABELS may cause issues with LVS",
   "MAGIC_DEF_LABELS": 0,

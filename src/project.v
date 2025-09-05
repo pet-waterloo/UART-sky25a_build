@@ -1,10 +1,7 @@
 /*
- * UART Transmitter  // ------------------- Receiver Signals -------------------
-  wire [3:0] rx_decode_out;     // Decoded data from Hamming decoder
-  wire [2:0] rx_syndrome_out;   // Error syndrome from Hamming decoder
-  wire       rx_valid_out;      // Valid signal from Hamming decoderceiver Top Module
+ * UART Transmitter & Receiver Top Module
  * Implements UART RX/TX with Hamming(7,4) error correction.
- * Copyright (c) 2024 Your Name
+ * Copyright (c) 2024 Peter Zhang, John Zhang
  * SPDX-License-Identifier: Apache-2.0
  */
 
@@ -24,7 +21,6 @@ module tt_um_ultrasword_jonz9 (
 );
 
   // ------------------- Receiver Signals -------------------
-  wire [2:0] rx_counter_out;    // Bit position from counter
   wire [3:0] rx_decode_out;     // Decoded data from Hamming decoder
   wire [2:0] rx_syndrome_out;   // Error syndrome from Hamming decoder
   wire       rx_valid_out;      // Valid signal from Hamming decoder
