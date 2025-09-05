@@ -1,5 +1,8 @@
 /*
- * UART Transmitter & Receiver Top Module
+ * UART Transmitter  // ------------------- Receiver Signals -------------------
+  wire [3:0] rx_decode_out;     // Decoded data from Hamming decoder
+  wire [2:0] rx_syndrome_out;   // Error syndrome from Hamming decoder
+  wire       rx_valid_out;      // Valid signal from Hamming decoderceiver Top Module
  * Implements UART RX/TX with Hamming(7,4) error correction.
  * Copyright (c) 2024 Your Name
  * SPDX-License-Identifier: Apache-2.0
@@ -89,7 +92,7 @@ module tt_um_ultrasword_jonz9 (
     .valid_out(rx_valid_out),          // Decoder valid
     .decode_out(rx_decode_out),        // Decoded data
     .debug_syndrome_out(rx_syndrome_out),   // Syndrome output
-    .debug_counter_out(rx_counter_out)      // Counter output
+    .debug_counter_out()                    // Unused, leave unconnected
   );
 
   // ------------------- Transmitter Logic ------------------
@@ -152,13 +155,15 @@ module tt_um_ultrasword_jonz9 (
     .tx_busy   (tx_busy)
   );
 
-  // 3-bit Counter instance
+  // 3-bit Counter instance (done output unused but kept for compatibility)
+  /* verilator lint_off PINCONNECTEMPTY */
   tt_um_counter_3b counter (
     .clk   (clk),
     .rst_n (rst_n),
     .ena   (1'b1),
     .count (tx_counter_out),
-    .done  ()
+    .done  ()  // Unused output, intentionally unconnected
   );
+  /* verilator lint_on PINCONNECTEMPTY */
 
 endmodule

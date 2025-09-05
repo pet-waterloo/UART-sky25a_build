@@ -4,11 +4,11 @@
  * UART Transmitter Module
  * Transmits parallel data serially over UART protocol.
  */
-// State encoding
-localparam IDLE = 2'b00;
-localparam LOAD = 2'b01;
-localparam SEND = 2'b10;
-localparam DONE = 2'b11;
+// State encoding for transmitter
+localparam TX_IDLE = 2'b00;
+localparam TX_LOAD = 2'b01;
+localparam TX_SEND = 2'b10;
+localparam TX_DONE = 2'b11;
 
 module tt_um_uart_transmitter (
     input  wire        clk,
@@ -25,7 +25,7 @@ module tt_um_uart_transmitter (
     reg [2:0] clk_count;                // counts 0 to 7 (8 cycles per bit)
     reg [7:0] tx_data_latched;
 
-    assign tx_busy = (state != IDLE);
+    assign tx_busy = (state != TX_IDLE);
 
     // Debug monitoring
     always @(posedge clk) begin
@@ -36,7 +36,7 @@ module tt_um_uart_transmitter (
     // FSM: State transition
     always @(posedge clk or negedge rst_n) begin
         if (!rst_n)
-            state <= IDLE;
+            state <= TX_IDLE;
         else
             state <= next_state;
     end
@@ -44,12 +44,12 @@ module tt_um_uart_transmitter (
     // FSM: Next-state logic
     always @(*) begin
         case (state)
-            IDLE : next_state = tx_start ? LOAD : IDLE;
-            LOAD : next_state = SEND;
+            TX_IDLE : next_state = tx_start ? TX_LOAD : TX_IDLE;
+            TX_LOAD : next_state = TX_SEND;
             // 10 bits total (0..9). Go DONE after last bit has been held for full baud period.
-            SEND : next_state = (bit_count == 4'd9 && clk_count == 3'd7) ? DONE : SEND;
-            DONE : next_state = IDLE;
-            default: next_state = IDLE;
+            TX_SEND : next_state = (bit_count == 4'd9 && clk_count == 3'd7) ? TX_DONE : TX_SEND;
+            TX_DONE : next_state = TX_IDLE;
+            default: next_state = TX_IDLE;
         endcase
     end
 
@@ -63,8 +63,8 @@ module tt_um_uart_transmitter (
             tx_data_latched  <= 8'h00;
         end else begin
             case (state)
-                // IDLE state when line is high, waiting for tx_start signal
-                IDLE: begin
+                // TX_IDLE state when line is high, waiting for tx_start signal
+                TX_IDLE: begin
                     tx        <= 1'b1;
                     clk_count <= 3'd0;
                     bit_count <= 4'd0;
@@ -73,8 +73,8 @@ module tt_um_uart_transmitter (
                     end
                 end
 
-                // LOAD state prepares shift_reg with start/data/stop bits
-                LOAD: begin
+                // TX_LOAD state prepares shift_reg with start/data/stop bits
+                TX_LOAD: begin
                     // Format: {stop bit, data MSB→LSB, start bit}
                     shift_reg <= {1'b1, tx_data_latched, 1'b0};
                     tx        <= 1'b0;  // immediately output start bit
@@ -82,8 +82,8 @@ module tt_um_uart_transmitter (
                     clk_count <= 3'd0;
                 end
 
-                // SEND state shifts out the data bits
-                SEND: begin
+                // TX_SEND state shifts out the data bits
+                TX_SEND: begin
                     tx <= shift_reg[0]; // drive current bit onto tx line
 
                     if (clk_count == 3'd7) begin
@@ -95,8 +95,8 @@ module tt_um_uart_transmitter (
                     end
                 end
 
-                // DONE state resets shift_reg and counters after transmission
-                DONE: begin
+                // TX_DONE state resets shift_reg and counters after transmission
+                TX_DONE: begin
                     shift_reg  <= 10'b1111111111;
                     bit_count  <= 4'd0;
                     clk_count  <= 3'd0;

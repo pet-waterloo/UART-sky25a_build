@@ -23,7 +23,6 @@ module tt_um_hamming_decoder_74 (
     
     // -------------------------------------------------------------------------- //
     // Registers
-    reg [6:0] decode_buffer;
     reg [3:0] decode_out_reg; // 4-bit register for decoded output
     reg valid_out_reg;        // Register for valid output signal
 
@@ -70,13 +69,9 @@ module tt_um_hamming_decoder_74 (
     always @(posedge clk or negedge rst_n) begin
         if (!rst_n) begin
             // Reset logic
-            decode_buffer <= 7'b0000000;
             decode_out_reg <= 4'b0000;
             valid_out_reg <= 1'b0;
         end else if (ena) begin
-            // Store corrected bits
-            decode_buffer <= corrected_bits;
-            
             // Extract corrected data bits
             decode_out_reg <= {
                 corrected_bits[6], // d3

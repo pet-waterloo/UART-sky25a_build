@@ -132,3 +132,20 @@ Tests decoder's ability to fix single-bit errors:
 - Syndrome ≠ 0 (error detected)
 - Correct decoded output
 - Valid signal is asserted
+
+---
+
+## Implementation Status
+
+### Fixed Issues
+
+The following issues have been resolved in the current implementation:
+
+1. **VARHIDDEN Warning**: Fixed parameter name conflicts between UART transmitter and receiver by using unique prefixes (`TX_*` and `RX_*`)
+2. **UNUSEDSIGNAL Warning**: Removed unused signals (`rx_counter_out`, `decode_buffer`)
+3. **BLKSEQ Warning**: Changed blocking assignments to non-blocking assignments in sequential logic
+4. **PINCONNECTEMPTY Warning**: Added lint directives for intentionally unconnected outputs
+
+### Known Limitations
+
+- **Metal5 Routing Layer**: The PDK configuration error (`[GRT-0005] Layer Metal5 not found`) is a tool-specific issue that needs to be resolved in the OpenLane/PDK configuration, not in the Verilog source code.

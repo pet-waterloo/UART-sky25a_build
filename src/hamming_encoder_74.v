@@ -17,9 +17,9 @@ module tt_um_hamming_encoder_74 (
             valid_out <= 1'b0;
         end else if (ena) begin
             // calculate 3 parity bits for hamming code 7,4
-            p1 = data_in[0] ^ data_in[1] ^ data_in[3];
-            p2 = data_in[0] ^ data_in[2] ^ data_in[3];
-            p3 = data_in[1] ^ data_in[2] ^ data_in[3];
+            p1 <= data_in[0] ^ data_in[1] ^ data_in[3];
+            p2 <= data_in[0] ^ data_in[2] ^ data_in[3];
+            p3 <= data_in[1] ^ data_in[2] ^ data_in[3];
 
             code_out <= {p1, p2, data_in[0], p3, data_in[1], data_in[2], data_in[3]};
             valid_out <= 1'b1;
