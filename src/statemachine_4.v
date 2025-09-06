@@ -1,6 +1,6 @@
 `default_nettype none
 
-// 3-bit counter module ~ 8 states
+// 2-bit state machine module ~ 4 states
 module tt_um_statemachine_4 (
     input  wire clk,      // clock
     input  wire rst_n,   // reset_n - low to reset

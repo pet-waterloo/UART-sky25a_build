@@ -148,7 +148,7 @@ The following issues have been resolved in the current implementation:
 
 ### Known Limitations
 
-- **Metal5 Routing Layer**: The PDK configuration error (`[GRT-0005] Layer Metal5 not found`) has been resolved by updating the configuration to use `met3` as the maximum routing layer instead of the non-existent `Metal5`.
+- **Metal5 Routing Layer**: The PDK configuration error (`[GRT-0005] Layer Metal5 not found`) has been resolved by updating the configuration to use `met4` as the maximum routing layer instead of the non-existent `Metal5`.
 
 ### Configuration Changes
 
@@ -156,9 +156,9 @@ The following changes have been made to resolve synthesis and place-and-route is
 
 1. **Routing Layer Configuration**: Updated `config.json` to use proper metal layer names:
 
-   - `RT_MAX_LAYER`: Changed from `"Metal5"` to `"met3"`
+   - `RT_MAX_LAYER`: Changed from `"Metal5"` to `"met4"`
    - Added `RT_MIN_LAYER`: `"met1"`
-   - Added `GRT_MAX_LAYER`: `"met3"`
+   - Added `GRT_MAX_LAYER`: `"met4"`
 
 2. **Placement Density**: Increased `PL_TARGET_DENSITY_PCT` from 60 to 75 for better placement convergence
 
@@ -166,4 +166,5 @@ The following changes have been made to resolve synthesis and place-and-route is
 
 4. **Test PDK Configuration**: Fixed test Makefile to use Sky130 PDK instead of IHP SG13G2:
    - Updated `VERILOG_SOURCES` paths from `ihp-sg13g2` to `sky130A`
-   - Added conditional inclusion to handle missing PDK files gracefully
+   - Added inclusion of `primitives.v` to define User Defined Primitives (UDPs)
+   - Fixed order: primitives must be included before standard cells

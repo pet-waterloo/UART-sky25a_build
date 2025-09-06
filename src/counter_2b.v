@@ -5,7 +5,7 @@ module tt_um_counter_2b (
     input  wire clk,      // clock
     input  wire rst_n,   // reset_n - low to reset
     input  wire ena,     // enable signal (active high)
-    output reg [1:0] count // 3-bit counter output
+    output reg [1:0] count // 2-bit counter output
 );
 
     // Counter logic
