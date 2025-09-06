@@ -163,3 +163,7 @@ The following changes have been made to resolve synthesis and place-and-route is
 2. **Placement Density**: Increased `PL_TARGET_DENSITY_PCT` from 60 to 75 for better placement convergence
 
 3. **Cell Exclusion**: Maintained exclusion of problematic cell `sg13g2_sdfbbp_1` in `EXTRA_EXCLUDED_CELLS`
+
+4. **Test PDK Configuration**: Fixed test Makefile to use Sky130 PDK instead of IHP SG13G2:
+   - Updated `VERILOG_SOURCES` paths from `ihp-sg13g2` to `sky130A`
+   - Added conditional inclusion to handle missing PDK files gracefully
